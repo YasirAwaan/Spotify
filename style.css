@@ -57,8 +57,8 @@ body {
   font-size: 10px;
   color: grey;
   gap: 13px;
-  position: absolute;
-  bottom: 0;
+  padding: 10px 0;
+  flex-wrap: wrap;
   padding: 10px 0;
 }
 
@@ -96,6 +96,7 @@ body {
   gap: 10px;
   flex-wrap: wrap;
   overflow-y: auto;
+  scroll-behavior: auto;
   max-height: 60vh;
 }
 
@@ -134,6 +135,20 @@ body {
   width: 100%;
   object-fit: contain;
 }
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #333;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #222;
+}
+
 .play {
   position: absolute;
   top: 110px;
@@ -186,12 +201,6 @@ body {
   bottom: 30px;
   background-color: #94bbe9;
 
-  /* This is for linear BackGround is someone like it You can use it😍 */
-  /* background:
-    radial-gradient(circle, #eeaeca, #94bbe9),
-    linear-gradient(90deg, #0a1414, #16adb5, #0a1414);
-  background-size: 1200% 1200%;
-  animation: playbar 20s ease infinite; */
   border-radius: 10px;
   padding: 12px;
   width: 70vw;
@@ -202,8 +211,15 @@ body {
   gap: 10px;
 }
 .songList ul {
-  padding: 0 40px;
+  height: 665px;
+  overflow: auto;
 }
 .songList ul li {
   list-style-type: decimal;
+  display: flex;
+  justify-content: space-between;
+  gap: 34px;
+  cursor: pointer;
+  margin: 12px 0;
+  padding: 10px;
 }
