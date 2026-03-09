@@ -47,7 +47,7 @@ async function main() {
   let songs = await getSongs();
   console.log(songs);
 
-  let songUl = document.querySelector(".songlist").getElementsByTagName("ul")[0];
+  let songUl = document.querySelector(".songList").getElementsByTagName("ul")[0];
 
   for (const song of songs) {
     let songName = decodeURIComponent(song);
