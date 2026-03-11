@@ -199,11 +199,12 @@ body {
   align-items: center;
   position: fixed;
   bottom: 30px;
-  background-color: #94bbe9;
-
-  border-radius: 10px;
-  padding: 12px;
-  width: 70vw;
+  /* background-color: #94bbe9; */
+  background-color: #36949471;
+  border-radius: 18px;
+  padding: 13px;
+  width: 70%;
+  height: 40px;
 }
 
 .songs {
@@ -211,8 +212,9 @@ body {
   gap: 10px;
 }
 .songList ul {
-  height: 665px;
+  height: 400px;
   overflow: auto;
+  margin-bottom: 44px;
 }
 .songList ul li {
   list-style-type: decimal;
@@ -222,4 +224,22 @@ body {
   cursor: pointer;
   margin: 12px 0;
   padding: 10px;
+}
+.seekbar {
+  position: absolute;
+  bottom: 8px;
+  background-color: rgb(11, 186, 199);
+  width: 98%;
+  height: 4px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.circle {
+  position: relative;
+  bottom: 6px;
+  width: 14px;
+  height: 14px;
+  background-color: aliceblue;
+  border-radius: 13px;
+  transition: all 0.5s ease;
 }
