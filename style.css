@@ -31,7 +31,15 @@ body {
   padding-top: 14px;
   font-weight: bold;
 }
-
+.hamburger {
+  display: none;
+}
+.HamburgerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
 .heading {
   display: flex;
   gap: 15px;
@@ -193,16 +201,17 @@ body {
   width: 81px;
 }
 
-.playbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.playbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-radius: 12px;
-  position:fixed;
-  bottom:20px;
-  width:70%;
-  padding:12px;
+  position: fixed;
+  bottom: 20px;
+  width: 70%;
+  padding: 12px;
   background-color: #36949471;
+  min-height: 40px;
 }
 
 .songs {
@@ -244,33 +253,77 @@ body {
 .songbutton {
   cursor: pointer;
 }
-.track{
-display:flex;
-align-items:center;
-gap:10px;
+.track {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.cover{
-width:40px;
-height:40px;
-object-fit:cover;
-border-radius:5px;
+.cover {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
 }
 
-.progress{
-  height:100%;
-  width:0%;
-  background:#1db954;
-  position:absolute;
-  left:0;
-  top:0;
-  border-radius:10px;
+.progress {
+  height: 100%;
+  width: 0%;
+  background: #1db954;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
 }
 
-.cover{
-display:none;
-width:40px;
-height:40px;
-object-fit:cover;
-border-radius:5px;
+.cover {
+  display: none;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.close {
+  display: none;
+}
+
+/* Responsive For Small Devices  */
+@media only screen and (max-width: 1200px) {
+  .left {
+    position: absolute;
+    transition: all 0.3s;
+    left: -120%;
+    width: 370px;
+    background-color: #222;
+    z-index: 1;
+  }
+  .right {
+    width: 100vw;
+    margin: 0;
+  }
+  .playbar {
+    width: calc(100vw - 60px);
+  }
+  .seekbar {
+    width: calc(100vw - 59px);
+  }
+  .hamburger {
+    display: block;
+  }
+  .left .close {
+    position: absolute;
+    right: 31px;
+    top: 25px;
+  }
+  .card {
+    width: 90vw;
+  }
+  .cardContainer {
+    margin: 0;
+    justify-content: center;
+  }
+  .close {
+    display: block;
+  }
 }

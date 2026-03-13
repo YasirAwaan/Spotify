@@ -146,27 +146,27 @@ document.addEventListener("mouseup", (e) => {
   if (!isDragging) return;
 
   let rect = seekbar.getBoundingClientRect();
-
   let offset = e.clientX - rect.left;
 
-  let percent = (offset / rect.width) * 100;
+  offset = Math.max(0, Math.min(offset, rect.width));
 
-  currentSong.currentTime = (currentSong.duration * percent) / 100;
+  let percent = offset / rect.width;
+
+  currentSong.currentTime = currentSong.duration * percent;
 
   isDragging = false;
 });
 
 seekbar.addEventListener("click", (e) => {
+  if (isDragging) return;
   let rect = seekbar.getBoundingClientRect();
-
   let offset = e.clientX - rect.left;
+  offset = Math.max(0, Math.min(offset, rect.width));
+  let percent = offset / rect.width;
+  circle.style.left = percent * 100 + "%";
+  document.querySelector(".progress").style.width = percent * 100 + "%";
 
-  let percent = (offset / rect.width) * 100;
-
-  circle.style.left = percent + "%";
-  document.querySelector(".progress").style.width = percent + "%";
-
-  currentSong.currentTime = (currentSong.duration * percent) / 100;
+  currentSong.currentTime = currentSong.duration * percent;
 });
 
 document.addEventListener("keydown", (e) => {
@@ -189,4 +189,28 @@ document.addEventListener("keydown", (e) => {
   if (e.code === "ArrowLeft") {
     currentSong.currentTime -= 5;
   }
+});
+// Right click disable
+document.addEventListener("contextmenu", (e) => e.preventDefault());
+
+// F12 / Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+U block karna
+
+document.addEventListener("keydown", (e) => {
+  if (
+    e.key === "F12" ||
+    (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key.toUpperCase())) ||
+    (e.ctrlKey && e.key.toUpperCase() === "U")
+  ) {
+    e.preventDefault();
+    alert("Sorry, inspect is disabled By Yasir Awan😎");
+  }
+});
+
+// Add an EventListner For Hamburger
+document.querySelector(".hamburger").addEventListener("click", () => {
+  document.querySelector(".left").style.left = "0";
+});
+// Add an EventListner For Close
+document.querySelector(".close").addEventListener("click", () => {
+  document.querySelector(".left").style.left = "-120%";
 });

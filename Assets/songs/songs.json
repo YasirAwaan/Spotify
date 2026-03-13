@@ -6,39 +6,29 @@
     "cover": "Assets/songs/Duji var piyar/cover.jpg"
   },
   {
-    "name": "Song2",
-    "artist": "Artist2",
-    "mp3": "Assets/songs/AFSANAY/AFSANAY - Young Stunners.mp3",
+    "name": "AFSANAY",
+    "artist": "Youngsters",
+    "mp3": "Assets/songs/AFSANAY/AFSANAY.mp3",
     "cover": "Assets/songs/AFSANAY/cover.jpg"
   },
   {
-    "name": "Song2",
-    "artist": "Artist2",
-    "mp3": "Assets/songs/AFSANAY/AFSANAY - Young Stunners.mp3",
-    "cover": "Assets/songs/AFSANAY/cover.jpg"
+    "name": "8 Parche",
+    "artist": "Baani Sandhu",
+    "mp3": "Assets/songs/8 Parche/.mp3",
+    "cover": "Assets/songs/8 Parche/cover.jpg"
   },
   {
-    "name": "Song2",
-    "artist": "Artist2",
-    "mp3": "Assets/songs/AFSANAY/AFSANAY - Young Stunners.mp3",
-    "cover": "Assets/songs/AFSANAY/cover.jpg"
+    "name": "Sirra",
+    "artist": "Guru Randhawa",
+    "mp3": "Assets/songs/Sirra/Sirra.mp3",
+    "cover": "Assets/songs/Sirra/cover.jpg"
   },
+  
   {
-    "name": "Song2",
-    "artist": "Artist2",
-    "mp3": "Assets/songs/AFSANAY/AFSANAY - Young Stunners.mp3",
-    "cover": "Assets/songs/AFSANAY/cover.jpg"
-  },
-  {
-    "name": "Song2",
-    "artist": "Artist2",
-    "mp3": "Assets/songs/AFSANAY/AFSANAY - Young Stunners.mp3",
-    "cover": "Assets/songs/AFSANAY/cover.jpg"
-  },
-  {
-    "name": "Song2",
-    "artist": "Artist2",
-    "mp3": "Assets/songs/AFSANAY/AFSANAY - Young Stunners.mp3",
-    "cover": "Assets/songs/AFSANAY/cover.jpg"
+    "name": "Ishqa Ve",
+    "artist": "Zeeshan Ali",
+    "mp3": "Assets/songs/Ishqa Ve/Ishqa Ve.mp3",
+    "cover": "Assets/songs/Ishqa Ve/cover.jpg"
   }
+ 
 ]
