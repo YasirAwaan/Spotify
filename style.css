@@ -105,7 +105,10 @@ body {
   flex-wrap: wrap;
   overflow-y: auto;
   scroll-behavior: auto;
-  max-height: 60vh;
+  max-height: 80vh;
+  .cardContainer{
+  /* height: calc(100vh - 220px); */
+}
 }
 
 .card {
@@ -155,6 +158,14 @@ body {
 
 ::-webkit-scrollbar-track {
   background-color: #222;
+}
+body {
+  user-select: none;
+}
+
+img {
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .play {
@@ -251,6 +262,18 @@ body {
   transition: all 0.5s ease;
 }
 .songbutton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  cursor: pointer;
+}
+
+.songbutton img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
   cursor: pointer;
 }
 .track {
@@ -260,6 +283,7 @@ body {
 }
 
 .cover {
+  display: none;
   width: 40px;
   height: 40px;
   object-fit: cover;
@@ -276,19 +300,63 @@ body {
   border-radius: 10px;
 }
 
-.cover {
-  display: none;
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
 .close {
   display: none;
 }
+.volumeControl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 10px;
+}
 
-/* Responsive For Small Devices  */
+.volume {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.volume-bar {
+  background: #555;
+  height: 5px;
+  width: 80px;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  transition: width 0.2s ease;
+}
+
+.volume-progress {
+  background: #1db954;
+  height: 100%;
+  width: 50%;
+  border-radius: 2px;
+  transition: width 0.2s ease;
+}
+
+.track .songinfo {
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: max-width 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .track .songinfo {
+    max-width: 100px;
+  }
+  .songbutton img {
+    width: 25px;
+    height: 25px;
+  }
+  .volumeControl {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 @media only screen and (max-width: 1200px) {
   .left {
     position: absolute;
@@ -297,11 +365,16 @@ body {
     width: 370px;
     background-color: #222;
     z-index: 1;
+    
   }
   .right {
     width: 100vw;
-    margin: 0;
+    margin: 0;   
   }
+  .playbar{
+  left: 50%;
+  transform: translateX(-50%);
+}
   .playbar {
     width: calc(100vw - 60px);
   }
@@ -323,7 +396,12 @@ body {
     margin: 0;
     justify-content: center;
   }
+
+  
   .close {
     display: block;
+  }
+  .volume-bar{
+    width: 60px;
   }
 }

@@ -2,33 +2,32 @@
   {
     "name": "Duji var piyar",
     "artist": "Sunand Sharmah",
-    "mp3": "Assets/songs/Duji var piyar/Duji var piyar by (Sunand Sharma).mp3",
-    "cover": "Assets/songs/Duji var piyar/cover.jpg"
+    "mp3": "Assets/songs/Duji var piyar/Duji var piyar.mp3"
   },
   {
     "name": "AFSANAY",
     "artist": "Youngsters",
-    "mp3": "Assets/songs/AFSANAY/AFSANAY.mp3",
-    "cover": "Assets/songs/AFSANAY/cover.jpg"
+    "mp3": "Assets/songs/AFSANAY/AFSANAY.mp3"
   },
   {
     "name": "8 Parche",
     "artist": "Baani Sandhu",
-    "mp3": "Assets/songs/8 Parche/.mp3",
-    "cover": "Assets/songs/8 Parche/cover.jpg"
+    "mp3": "Assets/songs/8 Parche/8 Parche.mp3"
   },
   {
     "name": "Sirra",
     "artist": "Guru Randhawa",
-    "mp3": "Assets/songs/Sirra/Sirra.mp3",
-    "cover": "Assets/songs/Sirra/cover.jpg"
+    "mp3": "Assets/songs/Sirra/Sirra.mp3"
   },
-  
+
   {
     "name": "Ishqa Ve",
     "artist": "Zeeshan Ali",
-    "mp3": "Assets/songs/Ishqa Ve/Ishqa Ve.mp3",
-    "cover": "Assets/songs/Ishqa Ve/cover.jpg"
+    "mp3": "Assets/songs/Ishqa Ve/Ishqa Ve.mp3"
+  },
+  {
+    "name": "Mist",
+    "artist": "EsDeeKid",
+    "mp3": "Assets/songs/EsDeeKid/EsDeeKid.mp3"
   }
- 
 ]

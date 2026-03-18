@@ -1,5 +1,4 @@
-console.log("shanti");
-
+console.log("Alhamdulillah For EveryThing");
 let songs = [];
 let currentIndex = 0;
 let play = document.querySelector(".play-btn");
@@ -7,9 +6,15 @@ let currentSong = new Audio();
 let isDragging = false;
 let circle = document.querySelector(".circle");
 let seekbar = document.querySelector(".seekbar");
-
+currentSong.preload = "auto";
 circle.addEventListener("mousedown", () => {
   isDragging = true;
+});
+
+// Disable text/image selection while dragging
+seekbar.addEventListener("mousedown", (e) => {
+  isDragging = true;
+  document.body.style.userSelect = "none";
 });
 
 async function getSongs() {
@@ -17,7 +22,6 @@ async function getSongs() {
   songs = await response.json();
   return songs;
 }
-
 const playMusic = (trackObj, index) => {
   currentIndex = index;
 
@@ -32,10 +36,14 @@ const playMusic = (trackObj, index) => {
   document.querySelector(".songinfo").innerHTML = trackObj.name;
 
   let cover = document.querySelector(".cover");
-  cover.src = trackObj.cover;
+
+  // mp3 path se cover path automatically banana
+  let folderPath = trackObj.mp3.substring(0, trackObj.mp3.lastIndexOf("/"));
+  let coverPath = folderPath + "/cover.jpg";
+
+  cover.src = coverPath;
   cover.style.display = "block";
 };
-
 async function main() {
   songs = await getSongs();
   console.log(songs);
@@ -48,7 +56,7 @@ async function main() {
 
     songUl.innerHTML += `
 <li>
-  <img src="${songObj.cover}" alt="">
+  <img src="${songObj.mp3.substring(0, songObj.mp3.lastIndexOf("/")) + "/cover.jpg"}" alt="">
   <div class="info">
     <div>${songObj.name}</div>
     <div>${songObj.artist || ""}</div>
@@ -191,20 +199,20 @@ document.addEventListener("keydown", (e) => {
   }
 });
 // Right click disable
-document.addEventListener("contextmenu", (e) => e.preventDefault());
+// document.addEventListener("contextmenu", (e) => e.preventDefault());
 
 // F12 / Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+U block karna
 
-document.addEventListener("keydown", (e) => {
-  if (
-    e.key === "F12" ||
-    (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key.toUpperCase())) ||
-    (e.ctrlKey && e.key.toUpperCase() === "U")
-  ) {
-    e.preventDefault();
-    alert("Sorry, inspect is disabled By Yasir Awan😎");
-  }
-});
+// document.addEventListener("keydown", (e) => {
+//   if (
+//     e.key === "F12" ||
+//     (e.ctrlKey && e.shiftKey && ["I", "J"].includes(e.key.toUpperCase())) ||
+//     (e.ctrlKey && e.key.toUpperCase() === "U")
+//   ) {
+//     e.preventDefault();
+//     alert("Sorry, inspect is disabled By Yasir Awan😎");
+//   }
+// });
 
 // Add an EventListner For Hamburger
 document.querySelector(".hamburger").addEventListener("click", () => {
@@ -213,4 +221,16 @@ document.querySelector(".hamburger").addEventListener("click", () => {
 // Add an EventListner For Close
 document.querySelector(".close").addEventListener("click", () => {
   document.querySelector(".left").style.left = "-120%";
+});
+
+const volumeBar = document.querySelector(".volume-bar");
+const volumeProgress = document.querySelector(".volume-progress");
+
+volumeBar.addEventListener("click", (e) => {
+  const rect = volumeBar.getBoundingClientRect();
+  const offset = e.clientX - rect.left;
+  const percent = Math.max(0, Math.min(offset / rect.width, 1));
+
+  currentSong.volume = percent; // set audio volume
+  volumeProgress.style.width = percent * 100 + "%";
 });
