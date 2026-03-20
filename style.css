@@ -106,9 +106,8 @@ body {
   overflow-y: auto;
   scroll-behavior: auto;
   max-height: 80vh;
-  .cardContainer{
-  /* height: calc(100vh - 220px); */
-}
+  .cardContainer {
+  }
 }
 
 .card {
@@ -342,7 +341,6 @@ img {
   text-overflow: ellipsis;
   transition: max-width 0.3s ease;
 }
-
 @media (max-width: 768px) {
   .track .songinfo {
     max-width: 100px;
@@ -357,29 +355,28 @@ img {
   }
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1000px) {
   .left {
     position: absolute;
-    transition: all 0.3s;
     left: -120%;
     width: 370px;
     background-color: #222;
     z-index: 1;
-    
+    transition: left 0.3s ease-in-out;
   }
   .right {
     width: 100vw;
-    margin: 0;   
+    margin: 0;
   }
-  .playbar{
-  left: 50%;
-  transform: translateX(-50%);
-}
   .playbar {
-    width: calc(100vw - 60px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .playbar {
+           width: calc(100vw - 30px);
   }
   .seekbar {
-    width: calc(100vw - 59px);
+    width: calc(100vw - 30px);
   }
   .hamburger {
     display: block;
@@ -397,11 +394,16 @@ img {
     justify-content: center;
   }
 
-  
   .close {
     display: block;
   }
-  .volume-bar{
+  .volume-bar {
     width: 60px;
+  }
+}
+@media (max-width: 800px) {
+  .left {
+    width: 100vw;
+    transition: left 0.3s ease-in-out;
   }
 }
