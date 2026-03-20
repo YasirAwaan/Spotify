@@ -18,33 +18,45 @@ currentSong.preload = "auto";
 currentSong.volume = 1;
 volumeProgress.style.width = "100%";
 
+// Fetch songs
 async function getSongs() {
   let response = await fetch("Assets/songs/songs.json");
   songs = await response.json();
   return songs;
 }
 
+// Play selected music
 const playMusic = (trackObj, index) => {
   currentIndex = index;
   currentSong.src = trackObj.mp3;
-  currentSong.play().catch(() => console.warn("Autoplay blocked"));
-  play.src = "Assets/img/pause.svg";
-  document.querySelector(".songinfo").innerHTML = trackObj.name;
 
+  // update cover
   let cover = document.querySelector(".cover");
   let folderPath = trackObj.mp3.substring(0, trackObj.mp3.lastIndexOf("/"));
   cover.src = folderPath + "/cover.jpg";
   cover.style.display = "block";
 
+  document.querySelector(".songinfo").innerHTML = trackObj.name;
+
+  // play after metadata loaded
+  currentSong.addEventListener("loadedmetadata", function loaded() {
+    currentSong.removeEventListener("loadedmetadata", loaded);
+    currentSong.play().catch(() => console.warn("Autoplay blocked"));
+    play.src = "Assets/img/pause.svg";
+    updateTimeDisplay();
+  });
+
   preloadNext();
 };
 
+// Preload next song
 function preloadNext() {
   let nextIndex = currentIndex < songs.length - 1 ? currentIndex + 1 : 0;
   nextSongAudio.src = songs[nextIndex].mp3;
   nextSongAudio.load();
 }
 
+// Populate song list
 async function main() {
   songs = await getSongs();
   let songUl = document.querySelector(".songList ul");
@@ -71,6 +83,7 @@ async function main() {
 }
 main();
 
+// Play/Pause
 play.addEventListener("click", (e) => {
   e.preventDefault();
   if (currentSong.paused) {
@@ -82,12 +95,9 @@ play.addEventListener("click", (e) => {
   }
 });
 
-let lastUpdate = 0;
-currentSong.addEventListener("timeupdate", () => {
-  if (isDragging) return;
-  let now = Date.now();
-  if (now - lastUpdate < 50) return;
-  lastUpdate = now;
+// Update time display
+function updateTimeDisplay() {
+  if (!currentSong.duration || !isFinite(currentSong.duration)) return;
 
   let current = currentSong.currentTime;
   let total = currentSong.duration;
@@ -106,58 +116,78 @@ currentSong.addEventListener("timeupdate", () => {
   let percent = (current / total) * 100;
   circle.style.left = percent + "%";
   document.querySelector(".progress").style.width = percent + "%";
-});
+}
 
-seekbar.addEventListener("mousedown", () => {
+currentSong.addEventListener("timeupdate", updateTimeDisplay);
+
+// Safe seek
+function safeSeek(time) {
+  if (!currentSong.src) return;
+  currentSong.currentTime = Math.min(time, currentSong.duration);
+  if (currentSong.paused) currentSong.play().catch(() => {});
+}
+
+// Seekbar drag
+function updateDrag(clientX) {
+  let rect = seekbar.getBoundingClientRect();
+  let offset = Math.max(0, Math.min(clientX - rect.left, rect.width));
+  dragPercent = offset / rect.width;
+
+  circle.style.left = dragPercent * 100 + "%";
+
+  let progressBar = document.querySelector(".progress");
+  let circleWidth = circle.offsetWidth || 10;
+  let seekWidth = seekbar.offsetWidth;
+  let adjustedPercent =
+    ((dragPercent * seekWidth - circleWidth / 2) / seekWidth) * 100;
+  adjustedPercent = Math.max(0, Math.min(adjustedPercent, 100));
+  progressBar.style.width = adjustedPercent + "%";
+}
+
+// Mouse drag events
+seekbar.addEventListener("mousedown", (e) => {
   isDragging = true;
   wasPlaying = !currentSong.paused;
   document.body.style.userSelect = "none";
+  updateDrag(e.clientX);
 });
 document.addEventListener("mousemove", (e) => {
   if (!isDragging) return;
-  let rect = seekbar.getBoundingClientRect();
-  let offset = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-  dragPercent = offset / rect.width;
-  circle.style.left = dragPercent * 100 + "%";
-  document.querySelector(".progress").style.width = dragPercent * 100 + "%";
+  updateDrag(e.clientX);
 });
 document.addEventListener("mouseup", () => {
   if (!isDragging) return;
-  currentSong.currentTime = dragPercent * currentSong.duration;
+  safeSeek(dragPercent * currentSong.duration);
   if (wasPlaying) currentSong.play();
   isDragging = false;
   document.body.style.userSelect = "auto";
 });
-seekbar.addEventListener("click", (e) => {
-  if (isDragging) return;
-  let rect = seekbar.getBoundingClientRect();
-  let offset = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-  let percent = offset / rect.width;
-  circle.style.left = percent * 100 + "%";
-  document.querySelector(".progress").style.width = percent * 100 + "%";
-  currentSong.currentTime = currentSong.duration * percent;
+seekbar.addEventListener("mouseleave", () => {
+  if (!isDragging) return;
+  safeSeek(dragPercent * currentSong.duration);
+  if (wasPlaying) currentSong.play();
+  isDragging = false;
+  document.body.style.userSelect = "auto";
 });
 
-seekbar.addEventListener("touchstart", () => {
+// Touch drag events
+seekbar.addEventListener("touchstart", (e) => {
   isDragging = true;
   wasPlaying = !currentSong.paused;
+  updateDrag(e.touches[0].clientX);
 });
 document.addEventListener("touchmove", (e) => {
   if (!isDragging) return;
-  let rect = seekbar.getBoundingClientRect();
-  let touch = e.touches[0];
-  let offset = Math.max(0, Math.min(touch.clientX - rect.left, rect.width));
-  dragPercent = offset / rect.width;
-  circle.style.left = dragPercent * 100 + "%";
-  document.querySelector(".progress").style.width = dragPercent * 100 + "%";
+  updateDrag(e.touches[0].clientX);
 });
 document.addEventListener("touchend", () => {
   if (!isDragging) return;
-  currentSong.currentTime = dragPercent * currentSong.duration;
+  safeSeek(dragPercent * currentSong.duration);
   if (wasPlaying) currentSong.play();
   isDragging = false;
 });
 
+// Prev/Next
 document.querySelector(".prev").addEventListener("click", () => {
   currentIndex = currentIndex > 0 ? currentIndex - 1 : songs.length - 1;
   playMusic(songs[currentIndex], currentIndex);
@@ -167,11 +197,13 @@ document.querySelector(".next").addEventListener("click", () => {
   playMusic(songs[currentIndex], currentIndex);
 });
 
+// Auto next
 currentSong.addEventListener("ended", () => {
   currentIndex = currentIndex < songs.length - 1 ? currentIndex + 1 : 0;
   playMusic(songs[currentIndex], currentIndex);
 });
 
+// Keyboard controls
 document.addEventListener("keydown", (e) => {
   if (e.code === "Space") {
     e.preventDefault();
@@ -183,17 +215,19 @@ document.addEventListener("keydown", (e) => {
       play.src = "Assets/img/play-btn.svg";
     }
   }
-  if (e.code === "ArrowRight") currentSong.currentTime += 5;
-  if (e.code === "ArrowLeft") currentSong.currentTime -= 5;
+  if (e.code === "ArrowRight") safeSeek(currentSong.currentTime + 5);
+  if (e.code === "ArrowLeft") safeSeek(currentSong.currentTime - 5);
 });
 
+// Hamburger menu
 document.querySelector(".hamburger").addEventListener("click", () => {
   document.querySelector(".left").style.left = "0";
 });
 document.querySelector(".close").addEventListener("click", () => {
-  document.querySelector(".left").style.left = "-100vw";
+  document.querySelector(".left").style.left = "-120vw";
 });
 
+// Volume control
 volumeBar.addEventListener("mousedown", (e) => {
   isVolumeDragging = true;
   updateVolume(e.clientX);
@@ -208,9 +242,7 @@ document.addEventListener("mouseup", () => {
   isVolumeDragging = false;
   document.body.style.userSelect = "auto";
 });
-volumeBar.addEventListener("click", (e) => {
-  updateVolume(e.clientX);
-});
+volumeBar.addEventListener("click", (e) => updateVolume(e.clientX));
 volumeBar.addEventListener("touchstart", (e) => {
   isVolumeDragging = true;
   updateVolume(e.touches[0].clientX);
@@ -223,6 +255,8 @@ document.addEventListener("touchend", () => {
   if (!isVolumeDragging) return;
   isVolumeDragging = false;
 });
+
+// Volume update
 function updateVolume(clientX) {
   const rect = volumeBar.getBoundingClientRect();
   let offset = Math.max(0, Math.min(clientX - rect.left, rect.width));
@@ -231,6 +265,7 @@ function updateVolume(clientX) {
   volumeProgress.style.width = percent * 100 + "%";
 }
 
+// Disable play icon click
 document.querySelectorAll(".songList ul li img.invert").forEach((img) => {
   img.addEventListener("click", (e) => e.preventDefault());
 });
